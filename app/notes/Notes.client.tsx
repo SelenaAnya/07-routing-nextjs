@@ -12,9 +12,10 @@ import { useDebounce } from 'use-debounce';
 
 interface NotesClientProps {
   initialData: NotesResponse;
+  selectedTag: string;
 }
 
-export default function NotesClient({ initialData }: NotesClientProps) {
+export default function NotesClient({ initialData, selectedTag }: NotesClientProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -22,8 +23,8 @@ export default function NotesClient({ initialData }: NotesClientProps) {
   const perPage = 12;
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['notes', currentPage, debounceSearchTerm],
-    queryFn: () => fetchNotes(currentPage, debounceSearchTerm, perPage),
+    queryKey: ['notes', currentPage, debounceSearchTerm, selectedTag],
+    queryFn: () => fetchNotes(currentPage, debounceSearchTerm, perPage, selectedTag),
     placeholderData: keepPreviousData,
     initialData: currentPage === 1 && !debounceSearchTerm ? initialData : undefined,
   });
