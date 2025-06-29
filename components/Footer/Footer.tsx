@@ -35,7 +35,7 @@ export default function RootLayout({
                     <main style={{ flex: 1 }}>
                         {children}
                     </main>
-                    <Footer />
+                    <Footer children={undefined} />
                 </TanStackProvider>
             </body>
         </html>
