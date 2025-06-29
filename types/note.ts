@@ -7,15 +7,26 @@ export interface Note {
   tag: string;
 }
 
-// export interface CreateNoteData {
-//     title: string;
-//     content: string;
-// }
+export interface Tag {
+  name: string;
+  count: number;
+}
 
-// export interface UpdateNoteData {
-//     title?: string;
-//     content?: string;
-// }
+export interface CreateNoteData {
+  title: string;
+  content: string;
+  tag: string;
+}
+
+export interface UpdateNoteData {
+  id: number;
+  title: string;
+  content: string;
+  tag: string;
+}
+
+export const AVAILABLE_TAGS = ['All', 'Work', 'Personal', 'Study', 'Ideas'] as const;
+export type TagType = typeof AVAILABLE_TAGS[number];
 
 export interface NewNoteData {
   title: string;
