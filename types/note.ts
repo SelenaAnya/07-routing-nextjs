@@ -40,5 +40,7 @@ export interface NotePreviewProps {
     tag: string;
     content: string;
     createdAt: Date;
+    note: Note;
   };
 }
+

@@ -78,13 +78,15 @@ export async function fetchTags(): Promise<string[]> {
     }
 }
 
-export async function notesApi() {
-    return {
-        getNotes: fetchNotes,
-        getNoteById: fetchNoteById,
-        createNote: createNote,
-        updateNote: updateNote,
-        deleteNote: deleteNote,
-        fetchTags: fetchTags,
-    };
-}
+
+export const notesApi = async () => ({
+    getNoteById: async (id: string) => {
+        try {
+            const response = await fetchNoteById(id);
+            return response;
+        } catch (error) {
+            console.error('Error fetching note by ID:', error);
+            throw error;
+        }
+    }
+});
