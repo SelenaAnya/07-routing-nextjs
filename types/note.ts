@@ -33,3 +33,12 @@ export interface NewNoteData {
   content: string;
   tag: string;
 }
+
+export interface NotePreviewProps {
+  note: {
+    title: string;
+    tag: string;
+    content: string;
+    createdAt: Date;
+  };
+}
