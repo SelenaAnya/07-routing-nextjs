@@ -1,15 +1,10 @@
 import { notFound } from 'next/navigation';
 import { notesApi } from '@/lib/api/notes';
 import Modal from '@/components/Modal/Modal';
-import { Note } from '@/types/note'; // Adjust the import path as necessary
-import NotePreview from '@/components/NotePreview/NotePreview';
-// Make sure NotePreview accepts a 'note' prop of type Note
-interface NotePreviewProps {
-    note: Note;
-}
+import { Note } from '@/types/note';
 
-export default function NotePreview({ note }: NotePreviewProps) {
-    // component implementation
+// Internal NotePreview component
+function NotePreview({ note }: { note: Note }) {
     return (
         <div>
             <h1>{note.title}</h1>
@@ -20,16 +15,13 @@ export default function NotePreview({ note }: NotePreviewProps) {
     );
 }
 
-export async function generateStaticParams() {
-    const api = await notesApi();
-    const notes = await api.getAllNotes();
-    return notes.map(note => ({ id: note.id }));
-}
-
-export async function InterceptedNotePage({ params }: { params: { id: string } }) {
+// Main page component - this should be the default export
+export default async function InterceptedNotePage({ params }: { params: Promise<{ id: string }> }) {
     try {
-        const api = await notesApi(); // Ensure the API is initialized
-        const note = await api.getNoteById(params.id);
+        const { id } = await params;
+        const api = await notesApi();
+        const note = await api.getNoteById(id);
+
         return (
             <Modal>
                 <NotePreview note={note} />
