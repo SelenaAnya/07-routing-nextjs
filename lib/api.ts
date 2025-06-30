@@ -1,4 +1,3 @@
-// lib/api.ts
 import axios, { type AxiosResponse } from 'axios';
 import { Note } from '../types/note';
 
