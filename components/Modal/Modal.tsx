@@ -5,10 +5,10 @@ import { useEffect } from 'react';
 import css from './Modal.module.css';
 
 
-type ModalProps {
+type ModalProps = {
     children: React.ReactNode;
     onClose: () => void;
-}
+};
 
 export default function Modal({ onClose, children }: ModalProps) {
     useEffect(() => {
