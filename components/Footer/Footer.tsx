@@ -1,43 +1,21 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import Header from "@/components/Header/Header";
-import Footer from "@/components/Footer/Footer";
-import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
+import React from "react";
+import css from "./Footer.module.css";
 
-const geistSans = Geist({
-    variable: "--font-geist-sans",
-    subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-    variable: "--font-geist-mono",
-    subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-    title: "NoteHub - Your Personal Note Taking App",
-    description: "Organize your thoughts and ideas with NoteHub",
-};
-
-export default function RootLayout({
-    children,
-}: Readonly<{
-    children: React.ReactNode;
-}>) {
+const Footer = () => {
     return (
-        <html lang="en">
-            <body
-                className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-            >
-                <TanStackProvider>
-                    <Header />
-                    <main style={{ flex: 1 }}>
-                        {children}
-                    </main>
-                    <Footer children={undefined} />
-                </TanStackProvider>
-            </body>
-        </html>
-    );
+        <footer className={css.footer}>
+            <div className={css.content}>
+                <p>© {new Date().getFullYear()} NoteHub. All rights reserved.</p>
+                <div className={css.wrap}>
+                    <p>Developer: your name</p>
+                    <p>
+                        Contact us:
+                        <a href="<mailto:selena.anya@mail.com>">selena.anya@mail.com</a>
+                    </p>
+                </div>
+            </div>
+        </footer >
+    )
 }
+
+export default Footer

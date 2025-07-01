@@ -1,23 +1,24 @@
 import Link from 'next/link';
 import TagsMenu from '../TagsMenu/TagsMenu';
 import css from './Header.module.css';
+import React from 'react';
 
-export default function Header() {
+const Header = () => {
     return (
         <header className={css.header}>
             <Link href="/" aria-label="Home">
                 NoteHub
             </Link>
-            <nav aria-label="Main Navigation">
+            <nav aria-Label="Maun Navigation">
                 <ul className={css.navigation}>
                     <li>
                         <Link href="/">Home</Link>
                     </li>
-                    <li>
-                        <TagsMenu />
-                    </li>
+                    <li><TagsMenu /></li>
                 </ul>
             </nav>
         </header>
     );
-}
+};
+
+export default Header;
