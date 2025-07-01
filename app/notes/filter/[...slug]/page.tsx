@@ -2,14 +2,14 @@ import { fetchNotes } from '@/lib/api';
 import NotesClient from './Notes.client';
 
 
-interface PageProps {
-    params: Promise<{ slug?: string[] }>;
-}
+type Props = {
+    params: Promise<{ slug: string[] }>;
+};
 
-const NotesByCategory = async ({ params }: PageProps) {
+const NotesByCategory = async ({ params }: Props) => {
     const { slug } = await params;
-    const category = slug ? slug.join('/') : undefined;
-    const data = await fetchNotes('', 1, category);
+    const category = slug[0] === 'all' ? undefined : slug[0];
+    const data = await fetchNotes(1, '', undefined, category);
 
     return (
         <div>

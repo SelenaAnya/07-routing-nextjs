@@ -2,13 +2,14 @@
 
 import { useState } from 'react';
 import { fetchNotes, type NotesResponse } from '@/lib/api';
-import NoteModal from '@/components/NoteModal/NoteModal';
+import Modal from '@/components/Modal/Modal';
 import Pagination from '@/components/Pagination/Pagination';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import css from './NotesPage.module.css';
 import NoteList from '@/components/NoteList/NoteList';
 import SearchBox from '@/components/SearchBox/SearchBox';
 import { useDebounce } from 'use-debounce';
+import NoteForm from '@/components/NoteForm/NoteForm';
 
 interface NotesClientProps {
     initialData: NotesResponse;
@@ -42,11 +43,11 @@ const NotesClient = ({ initialData, tag }: NotesClientProps) {
     return (
         <div className={css.app}>
             <header className={css.toolbar}>
-                <SearchBox value={searchQuery} onChange={handleSearchChange} />
+                <SearchBox searchQuery={searchQuery} onChange={handleSearchChange} />
                 {data && data.totalPages > 1 && (
                     <Pagination
                         currentPage={currentPage}
-                        pageCount={data.totalPages}
+                        totalPages={data.totalPages}
                         onPageChange={setCurrentPage}
                     />
                 )}

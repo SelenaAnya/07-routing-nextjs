@@ -6,36 +6,35 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 interface NoteFormProps {
-  onSuccess: () => void;
   onClose: () => void;
 }
 
-export default function NoteForm({ onSuccess, onClose }: NoteFormProps) {
+export default function NoteForm({ onClose }: NoteFormProps) {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
     mutationFn: (noteData: NewNoteData) => createNote(noteData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notes'] });
-      onSuccess();
+      onClose();
     },
   });
 
-  const NoteSchema = Yup.object().shape({
+  const validationSchema = Yup.object({
     title: Yup.string()
-      .min(3, 'Must be at least 3 characters')
-      .max(50, 'Must be at most 50 characters')
-      .required('Title is required'),
-    content: Yup.string().max(500, 'Must be at most 500 characters'),
+      .min(3, 'Title must be at least 3 characters')
+      .max(50, 'Title must be at most 50 characters')
+      .required(),
+    content: Yup.string().max(500, 'Content must be at most 500 characters'),
     tag: Yup.string()
-      .oneOf(['Todo', 'Work', 'Personal', 'Meeting', 'Shopping'])
-      .required('Tag is required'),
+      .oneOf(['Todo', 'Work', 'Personal', 'Meeting', 'Shopping'], 'Invalid tag')
+      .required(),
   });
 
   return (
     <Formik
       initialValues={{ title: '', content: '', tag: 'Todo' }}
-      validationSchema={NoteSchema}
+      validationSchema={validationSchema}
       onSubmit={(values, actions) => {
         mutate(values);
         actions.resetForm();

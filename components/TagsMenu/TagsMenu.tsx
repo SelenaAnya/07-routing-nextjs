@@ -3,13 +3,14 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import css from './TagsMenu.module.css';
-import { AVAILABLE_TAGS } from '../../types/note';
 
-export default function TagsMenu() {
+const tag = ['All', 'Todo', 'Work', 'Personal', 'Meeting', 'Shopping'];
+
+const TagsMenu = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleMenu = () => {
-        setIsOpen(!isOpen);
+        setIsOpen(prev => !prev);
     };
 
     const closeMenu = () => {
@@ -22,7 +23,7 @@ export default function TagsMenu() {
                 className={css.menuButton}
                 onClick={toggleMenu}
                 onBlur={(e) => {
-                    // Закрываем меню, если фокус ушел не на элемент меню
+                    // Close the menu if the focus is not on the menu item
                     if (!e.currentTarget.parentElement?.contains(e.relatedTarget)) {
                         closeMenu();
                     }
@@ -30,7 +31,7 @@ export default function TagsMenu() {
             >
                 Notes ▾
             </button>
-            {isOpen && (
+            {/* {isOpen && (
                 <ul className={css.menuList}>
                     {AVAILABLE_TAGS.map((tag) => (
                         <li key={tag} className={css.menuItem}>
@@ -44,7 +45,8 @@ export default function TagsMenu() {
                         </li>
                     ))}
                 </ul>
-            )}
+            )} */}
         </div>
     );
 }
+export default TagsMenu;
