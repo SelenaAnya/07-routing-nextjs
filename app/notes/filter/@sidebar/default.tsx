@@ -1,4 +1,4 @@
-import css from "./Sidebar.module.css";
+import css from "./SidebarNotes.module.css";
 import Link from "next/link";
 
 const NotesSidebar = async () => {
@@ -13,9 +13,12 @@ const NotesSidebar = async () => {
     return (
         <ul className={css.menuList}>
             {tags.map(tag => (
-                <li key={tag} className={css.menuItem}>
-                    <Link href={`/notes/filter/${tag === 'All' ? 'all' : tag}`} className={css.menuLink}>
-                        {tag}
+                <li key={tag.name} className={css.menuItem}>
+                    <Link
+                        href={`/notes/filter/${tag.name === 'All' ? 'all' : tag.slug}`}
+                        className={css.menuLink}
+                    >
+                        {tag.name}
                     </Link>
                 </li>
             ))}

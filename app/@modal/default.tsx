@@ -1,5 +1,5 @@
-const default = () => {
+const DefaultModal = () => {
     return null;
 };
 
-export default default ;
+export default DefaultModal;

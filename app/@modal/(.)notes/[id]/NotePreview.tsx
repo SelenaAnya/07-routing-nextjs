@@ -5,12 +5,13 @@ import css from './NotePreview.module.css';
 import Modal from '@/components/Modal/Modal';
 
 const NotePreviewClient = () => {
-    const { id } = useParams<{ id: string }>();
+    const { id } = useParams() as { id: string };;
     const router = useRouter();
 
     const { data: note, isLoading, error } = useQuery({
         queryKey: ['note', id],
         queryFn: () => fetchNoteById(id!),
+        enabled: !!id,
     });
 
     if (isLoading) return <p>Loading...</p>;
@@ -27,17 +28,20 @@ const NotePreviewClient = () => {
                     <div className={css.item}>
                         <div className={css.header}>
                             <h2>{note.title}</h2>
-                            <button className={css.editBtn}>Edite note</button>
+                            <button className={css.editBtn}>Edit note</button>
                         </div>
-                        <div className={css.content}></p>
-                        {note.tag && <><p className={css.tags}>Tag: {note.tag}</p><p className={css.date}>{note.createdAt}</p></>}
+                        <div className={css.content}>{note.content}</div>
+                        {note.tag && (
+                            <>
+                                <p className={css.tags}>Tag: {note.tag}</p>
+                                <p className={css.date}>{note.createdAt}</p>
+                            </>
+                        )}
                     </div>
                 )}
-                        // <button className={css.closeButton} onClick={handleClose}>
-                        //     Close
-                        // </button>
             </div>
-        </Modal >
+        </Modal>
     );
 };
+
 export default NotePreviewClient;
