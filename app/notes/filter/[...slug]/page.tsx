@@ -1,20 +1,21 @@
 import { fetchNotes } from '@/lib/api';
 import NotesClient from './Notes.client';
-import { AVAILABLE_TAGS } from '@/types/note';
-import { notFound } from 'next/navigation';
+
 
 interface PageProps {
     params: Promise<{ slug?: string[] }>;
 }
 
-export default async function NotesFilterPage({ params }: PageProps) {
+const NotesByCategory = async ({ params }: PageProps) {
     const { slug } = await params;
-    const tag = slug?.[0] ?? 'All';
+    const category = slug ? slug.join('/') : undefined;
+    const data = await fetchNotes('', 1, category);
 
-    if (!AVAILABLE_TAGS.includes(tag as any)) {
-        notFound();
-    }
+    return (
+        <div>
+            <NotesClient initialData={data} tag={category} />
+        </div>
+    );
+};
 
-    const initialData = await fetchNotes(1, '', 12, tag === 'All' ? undefined : tag);
-    return <NotesClient initialData={initialData} selectedTag={tag} />;
-}
+export default NotesByCategory;
