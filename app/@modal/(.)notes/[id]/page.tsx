@@ -1,33 +1,24 @@
-import { notFound } from 'next/navigation';
-import { notesApi } from '@/lib/api/notes';
-import Modal from '@/components/Modal/Modal';
-import { Note } from '@/types/note';
+import { fetchNoteById } from "@/lib/api";
+import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
+import NotePreviewClient from "./NotePreview";
 
-// Internal NotePreview component
-function NotePreview({ note }: { note: Note }) {
+type NotePreviewProps = {
+    params: Promise<{ id: string }>;
+};
+
+const NotePreview = async ({ params }: NotePreviewProps) => {
+    const { id } = await params;
+
+    const queryClient = new QueryClient();
+    await queryClient.prefetchQuery({
+        queryKey: ["note", id],
+        queryFn: () => fetchNoteById(id),
+    });
+
     return (
-        <div>
-            <h1>{note.title}</h1>
-            <p>{note.content}</p>
-            <span>{note.tag}</span>
-            <p>Created at: {new Date(note.createdAt).toLocaleString()}</p>
-        </div>
+        <HydrationBoundary state={dehydrate(queryClient)}>
+            <NotePreviewClient />
+        </HydrationBoundary>
     );
-}
-
-// Main page component - this should be the default export
-export default async function InterceptedNotePage({ params }: { params: Promise<{ id: string }> }) {
-    try {
-        const { id } = await params;
-        const api = await notesApi();
-        const note = await api.getNoteById(id);
-
-        return (
-            <Modal>
-                <NotePreview note={note} />
-            </Modal>
-        );
-    } catch (error) {
-        notFound();
-    }
-}
+};
+export default NotePreview;

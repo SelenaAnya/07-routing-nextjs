@@ -1,11 +1,13 @@
 'use client';
+import React from 'react';
 
-type Props = {
+
+type ErrorProps = {
     error: Error;
     reset: () => void;
 };
 
-export default function Error({ error, reset }: Props) {
+const ErrorProps = ({ error, reset }: ErrorProps) => {
     return (
         <div>
             <p>Could not fetch the list of notes. {error.message}</p>

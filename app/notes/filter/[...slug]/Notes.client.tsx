@@ -12,37 +12,37 @@ import { useDebounce } from 'use-debounce';
 
 interface NotesClientProps {
     initialData: NotesResponse;
-    selectedTag: string;
+    tag?: string;
 }
 
-export default function NotesClient({ initialData, selectedTag }: NotesClientProps) {
+const NotesClient = ({ initialData, tag }: NotesClientProps) {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [searchTerm, setSearchTerm] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const [debounceSearchTerm] = useDebounce(searchTerm, 1000);
+    const [debounceSearchQuery] = useDebounce(searchQuery, 400);
     const perPage = 12;
 
-    const { data, isLoading, isError } = useQuery({
-        queryKey: ['notes', currentPage, debounceSearchTerm, selectedTag],
-        queryFn: () => fetchNotes(currentPage, debounceSearchTerm, perPage, selectedTag),
+    const { data } = useQuery({
+        queryKey: ['notes', currentPage, debounceSearchQuery, tag],
+        queryFn: () => fetchNotes(currentPage, debounceSearchQuery, perPage, tag),
         placeholderData: keepPreviousData,
-        initialData: currentPage === 1 && !debounceSearchTerm ? initialData : undefined,
+        initialData: currentPage === 1 && !debounceSearchQuery ? initialData : undefined,
     });
 
-    console.log('Data on Vercel:', data);
+    // console.log('Data on Vercel:', data);
+
+    const handleSearchChange = (query: string) => {
+        setSearchQuery(query);
+        setCurrentPage(1);
+    }
 
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
-    const handleSearchChange = (newTerm: string) => {
-        setSearchTerm(newTerm);
-        setCurrentPage(1);
-    };
-
     return (
         <div className={css.app}>
             <header className={css.toolbar}>
-                <SearchBox value={searchTerm} onChange={handleSearchChange} />
+                <SearchBox value={searchQuery} onChange={handleSearchChange} />
                 {data && data.totalPages > 1 && (
                     <Pagination
                         currentPage={currentPage}
@@ -54,10 +54,14 @@ export default function NotesClient({ initialData, selectedTag }: NotesClientPro
                     Create note +
                 </button>
             </header>
-            {isLoading && <strong className={css.loading}>Loading notes...</strong>}
-            {isError && <p>Something went wrong. Please try again.</p>}
-            {data && <NoteList notes={data.notes} />}
-            {isModalOpen && <NoteModal onClose={closeModal} onSuccess={closeModal} />}
+            {data?.notes && data.notes.length > 0 && <NoteList notes={data.notes} />}
+            {isModalOpen && (
+                <Modal onClose={closeModal}>
+                    <NoteForm onClose={closeModal} />
+                </Modal>
+            )}
         </div>
     );
-} 
+};
+
+export default NotesClient; 

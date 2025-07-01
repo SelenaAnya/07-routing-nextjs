@@ -1,10 +1,17 @@
 'use client';
 
-interface ErrorProps {
-    error: Error;
-    reset: () => void;
-}
+import React from "react";
 
-export default function Error({ error }: ErrorProps) {
-    return <p>Could not fetch the list of notes. {error.message}</p>;
-}
+type ErrorProps = {
+    error: Error
+};
+
+const Error = ({ error }: ErrorProps) => {
+    return (
+        <div>
+            <h1>Something went wrong</h1>
+            <p>{error.message}</p>
+        </div>
+    );
+};
+export default Error;
