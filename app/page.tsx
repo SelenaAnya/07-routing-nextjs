@@ -24,32 +24,6 @@ export default function Home() {
           reminders, planning your day, or brainstorming ideas, NoteHub provides the perfect
           digital workspace for all your note-taking needs.
         </p>
-
-        <section className={css.features}>
-          <div className={css.feature}>
-            <h3 className={css.featureTitle}>📝 Easy Note Creation</h3>
-            <p className={css.featureDescription}>
-              Create notes quickly with our intuitive interface. Add titles, content,
-              and organize with tags.
-            </p>
-          </div>
-
-          <div className={css.feature}>
-            <h3 className={css.featureTitle}>🏷️ Smart Organization</h3>
-            <p className={css.featureDescription}>
-              Categorize your notes with tags like Work, Personal, Shopping, and more
-              for easy filtering and searching.
-            </p>
-          </div>
-
-          <div className={css.feature}>
-            <h3 className={css.featureTitle}>🔍 Powerful Search</h3>
-            <p className={css.featureDescription}>
-              Find what you need instantly with our search functionality.
-              Filter by tags or search through content.
-            </p>
-          </div>
-        </section>
       </div>
     </main>
   );
