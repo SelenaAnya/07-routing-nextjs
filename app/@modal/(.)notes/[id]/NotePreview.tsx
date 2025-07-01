@@ -12,8 +12,8 @@ const NotePreviewClient = () => {
 
     const { data: note, isLoading, error } = useQuery({
         queryKey: ['note', id],
-        queryFn: () => fetchNoteById(id),
-        enabled: !!id,
+        queryFn: () => fetchNoteById(Number(id)),
+        enabled: !!id && !isNaN(Number(id)),
     });
 
     if (isLoading) return <p>Loading...</p>;
