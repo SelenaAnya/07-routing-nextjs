@@ -7,7 +7,7 @@ const token = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
-    'Authorization': `Bearer ${token}`,
+    Authorization: `Bearer ${token}`,
     'Content-Type': 'application/json',
   },
 });
@@ -32,26 +32,25 @@ export interface FetchNotesParams {
 
 export const fetchNotes = async (
   currentPage: number = 1,
-  debounceSearchTerm: string = '',
+  search: string = '',
   perPage: number = 12,
-  tag: string = ''
+  tag?: string
 ): Promise<NotesResponse> => {
-  const queryParams = new URLSearchParams({
-    page: currentPage.toString(),
-    perPage: perPage.toString(),
-  });
+  const params: Record<string, string | number> = {
+    page: currentPage,
+    perPage,
+  };
 
-  if (debounceSearchTerm?.trim()) {
-    queryParams.append('search', debounceSearchTerm.trim());
+  if (search.trim()) {
+    params.search = search.trim();
   }
 
-  // Add a tag only if it is not empty
-  if (tag?.trim()) {
-    queryParams.append('tag', tag.trim());
+  if (tag?.trim() && tag !== 'All') {
+    params.tag = tag.trim();
   }
 
   try {
-    const response: AxiosResponse<NotesResponse> = await api.get(`?${queryParams}`);
+    const response: AxiosResponse<NotesResponse> = await api.get('/', { params });
     return response.data;
   } catch (error) {
     console.error('Error fetching notes:', error);
@@ -60,24 +59,16 @@ export const fetchNotes = async (
 };
 
 export const createNote = async (noteData: CreateNoteRequest): Promise<Note> => {
-  const response: AxiosResponse<Note> = await api.post('', noteData);
+  const response: AxiosResponse<Note> = await api.post('/', noteData);
   return response.data;
 };
 
 export const deleteNote = async (noteId: number): Promise<Note> => {
-  const response = await axios.delete<Note>(`${token}/${noteId}`, {
-    headers: {
-      Authorization: `Bearer ${API_BASE_URL}`
-    },
-  });
+  const response: AxiosResponse<Note> = await api.delete(`/${noteId}`);
   return response.data;
 };
 
 export const fetchNoteById = async (noteId: number): Promise<Note> => {
-  const response = await axios.get<Note>(`${API_BASE_URL}/${noteId}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
+  const response: AxiosResponse<Note> = await api.get(`/${noteId}`);
   return response.data;
 };

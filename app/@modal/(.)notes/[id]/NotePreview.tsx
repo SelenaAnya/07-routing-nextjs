@@ -3,47 +3,49 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchNoteById } from '@/lib/api';
 import { useParams, useRouter } from 'next/navigation';
-import css from './NotePreview.module.css';
+import NotePreview from '@/components/NotPreview/NotPreview';
 import Modal from '@/components/Modal/Modal';
 
-const NotePreviewClient = () => {
-    const { id } = useParams() as { id: string };
+
+export default function NotePreviewClient() {
+    const { id } = useParams();
     const router = useRouter();
+    const parsedId = Number(id);
 
-    const { data: note, isLoading, error } = useQuery({
-        queryKey: ['note', id],
-        queryFn: () => fetchNoteById(Number(id)),
-        enabled: !!id && !isNaN(Number(id)),
-    });
-
-    if (isLoading) return <p>Loading...</p>;
-    if (error || !note) return <p>Something went wrong.</p>;
-
-    const handleClose = () => {
+    const handleCloseModal = () => {
         router.back();
     };
 
+
+    // const { data: note, isLoading, error } = useQuery({
+    //     queryKey: ['note', id],
+    //     queryFn: () => fetchNoteById(Number(id)),
+    //     enabled: !!id && !isNaN(Number(id)),
+    // });
+
+    // if (isLoading) return <p>Loading...</p>;
+    // if (error || !note) return <p>Something went wrong.</p>;
+
+    // const handleClose = () => {
+    //     router.back();
+    // };
+    const {
+        data: note,
+        isLoading,
+        isError,
+    } = useQuery<Note>({
+        queryKey: ["notes", parseId],
+        queryFn: () => fetchNoteById(parseId),
+        refetchOnMount: false,
+    });
+
+    if (!id || Number.isNaN(id)) return <p>Invalid ID</p>;
+    if (isLoading) return <p>Loading, please wait...</p>;
+    if (isError || !note) return <p>Something went wrong.</p>;
+
     return (
-        <Modal onClose={() => router.back()}>
-            <div className={css.container}>
-                {note && (
-                    <div className={css.item}>
-                        <div className={css.header}>
-                            <h2>{note.title}</h2>
-                            <button className={css.editBtn}>Edit note</button>
-                        </div>
-                        <div className={css.content}>{note.content}</div>
-                        {note.tag && (
-                            <>
-                                <span className={css.tag}>{note.tag}</span>
-                                <div className={css.date}>{note.createdAt}</div>
-                            </>
-                        )}
-                    </div>
-                )}
-            </div>
+        <Modal onClose={handleCloseModal}>
+            <NotePreview note={note} onClose={handleCloseModal} />
         </Modal>
     );
-};
-
-export default NotePreviewClient;
+}
