@@ -7,18 +7,23 @@ import { fetchNoteById } from '@/lib/api';
 
 export default function NoteDetailsClient() {
   const { id } = useParams<{ id: string }>();
+  const parsedId = Number(id);
+
+  // Check if ID is valid before making the query
+  if (!id || Number.isNaN(parsedId)) {
+    return <p>Note ID is missing or invalid.</p>;
+  }
 
   const {
     data: note,
     isLoading,
     error,
   } = useQuery({
-    queryKey: ['note', id],
-    queryFn: () => fetchNoteById(Number(id)),
+    queryKey: ['note', id], // Use consistent query key
+    queryFn: () => fetchNoteById(parsedId),
+    enabled: !!id && !Number.isNaN(parsedId), // Only run query if ID is valid
   });
 
-  if (!id || Number.isNaN(Number(id)))
-    return <p>Note ID is missing.</p>;
   if (isLoading) return <p>Loading...</p>;
   if (error || !note) return <p>Something went wrong.</p>;
 
@@ -38,4 +43,3 @@ export default function NoteDetailsClient() {
     </div>
   );
 }
-

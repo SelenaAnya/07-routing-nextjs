@@ -7,8 +7,7 @@ interface SearchBoxProps {
   error?: string;
 }
 
-export default function SearchBox({ onChange, error }: SearchBoxProps) {
-  const [value, setValue] = React.useState('');
+export default function SearchBox({ value, onChange, error }: SearchBoxProps) {
   return (
     <>
       <input
