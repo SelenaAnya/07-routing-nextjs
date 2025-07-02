@@ -1,9 +1,8 @@
 import Link from 'next/link';
 import TagsMenu from '../TagsMenu/TagsMenu';
 import css from './Header.module.css';
-import React from 'react';
 
-const Header = () => {
+export default function Header() {
     return (
         <header className={css.header}>
             <Link href="/" aria-label="Home">
@@ -11,14 +10,12 @@ const Header = () => {
             </Link>
             <nav aria-label="Main Navigation">
                 <ul className={css.navigation}>
-                    <li>
-                        <Link href="/">Home</Link>
+                    <li className={css.navigationItem}>
+                        <Link className={css.navigationLink} href="/">Home</Link>
                     </li>
-                    <li><TagsMenu /></li>
+                    <li className={css.navigationLink}><TagsMenu /></li>
                 </ul>
             </nav>
         </header>
     );
 };
-
-export default Header;

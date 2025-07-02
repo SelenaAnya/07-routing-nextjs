@@ -6,16 +6,14 @@ type Props = {
     params: Promise<{ slug: string[] }>;
 };
 
-const NotesByCategory = async ({ params }: Props) => {
+export default async function NotesByCategory({
+    params,
+}: Props) {
     const { slug } = await params;
     const category = slug[0] === 'all' ? undefined : slug[0];
     const data = await fetchNotes(1, '', undefined, category);
-
     return (
-        <div>
-            <NotesClient initialData={data} tag={category} />
-        </div>
+        <NotesClient initialData={data} tag={category} />
     );
-};
+}
 
-export default NotesByCategory;

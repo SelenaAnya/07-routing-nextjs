@@ -16,7 +16,7 @@ interface NotesClientProps {
     tag?: string;
 }
 
-const NotesClient = ({ initialData, tag }: NotesClientProps) => {
+export default function NotesClient({ initialData, tag }: NotesClientProps) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
@@ -65,4 +65,3 @@ const NotesClient = ({ initialData, tag }: NotesClientProps) => {
     );
 };
 
-export default NotesClient; 

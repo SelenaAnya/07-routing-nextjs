@@ -1,5 +1,3 @@
-const DefaultModal = () => {
+export default function DefaultSidebar() {
     return null;
-};
-
-export default DefaultModal;
+}
