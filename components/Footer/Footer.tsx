@@ -5,17 +5,17 @@ const Footer = () => {
     return (
         <footer className={css.footer}>
             <div className={css.content}>
-                <p>© {new Date().getFullYear()} NoteHub. All rights reserved.</p>
+                <p>&copy; {new Date().getFullYear()} NoteHub. All rights reserved.</p>
                 <div className={css.wrap}>
                     <p>Developer: your name</p>
                     <p>
-                        Contact us:
-                        <a href="<mailto:selena.anya@mail.com>">selena.anya@mail.com</a>
+                        Contact us: {" "}
+                        <a href="mailto:selena.anya@mail.com">selena.anya@mail.com</a>
                     </p>
                 </div>
             </div>
-        </footer >
-    )
-}
+        </footer>
+    );
+};
 
-export default Footer
+export default Footer;
