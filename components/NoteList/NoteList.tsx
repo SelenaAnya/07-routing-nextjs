@@ -1,38 +1,44 @@
 import Link from 'next/link';
 import { Note } from '@/types/note';
 import css from './NoteList.module.css';
+import { deleteNote } from '@/lib/api';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface NoteListProps {
     notes: Note[];
 }
 
 export default function NoteList({ notes }: NoteListProps) {
-    if (notes.length === 0) {
-        return (
-            <div className={css.empty}>
-                <p>No notes found. Create your first note!</p>
-            </div>
-        );
-    }
+    const queryClient = useQueryClient();
+
+    const { mutate: deleteNoteMutation } = useMutation({
+        mutationFn: (id: number) => deleteNote(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['notes'] });
+        },
+    });
 
     return (
-        <div className={css.grid}>
+        <ul className={css.list}>
             {notes.map((note) => (
-                <Link key={note.id} href={`/notes/${note.id}`} className={css.card}>
-                    <div className={css.cardHeader}>
-                        <h3 className={css.title}>{note.title}</h3>
+                <li key={note.id} className={css.linkItem}>
+                    <h2 className={css.title}>{note.title}</h2>
+                    <p className={css.content}>{note.content}</p>
+                    <div className={css.footer}>
                         <span className={css.tag}>{note.tag}</span>
+                        <Link href={`/notes/${note.id}`} className={css.link}>
+                            View details
+                        </Link>
+                        <button
+                            type="button"
+                            className={css.button}
+                            onClick={() => deleteNoteMutation(note.id)}
+                        >
+                            Delete
+                        </button>
                     </div>
-                    <p className={css.content}>
-                        {note.content.length > 100
-                            ? `${note.content.substring(0, 100)}...`
-                            : note.content}
-                    </p>
-                    <p className={css.date}>
-                        {new Date(note.createdAt).toLocaleDateString()}
-                    </p>
-                </Link>
+                </li>
             ))}
-        </div>
+        </ul>
     );
 }
