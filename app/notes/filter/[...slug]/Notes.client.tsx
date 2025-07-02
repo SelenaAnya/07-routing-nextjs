@@ -43,7 +43,7 @@ export default function NotesClient({ initialData, tag }: NotesClientProps) {
     return (
         <div className={css.app}>
             <header className={css.toolbar}>
-                <SearchBox searchQuery={searchQuery} onChange={handleSearchChange} />
+                <SearchBox value={searchQuery} onChange={handleSearchChange} />
                 {data && data.totalPages > 1 && (
                     <Pagination
                         currentPage={currentPage}
