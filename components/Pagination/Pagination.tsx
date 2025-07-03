@@ -37,13 +37,6 @@ export default function Pagination({
       forcePage={currentPage - 1}
       containerClassName={css.pagination}
       activeClassName={css.active}
-      previousClassName={css.pageLink}
-      nextClassName={css.pageLink}
-      pageClassName={css.pageItem}
-      pageLinkClassName={css.pageLink}
-      breakClassName={css.pageItem}
-      breakLinkClassName={css.pageLink}
-      disabledClassName={css.disabled}
       renderOnZeroPageCount={() => null}
     />
   );

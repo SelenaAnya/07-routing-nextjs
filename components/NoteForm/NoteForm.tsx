@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 
 interface NoteFormProps {
   onClose: () => void;
-  onSuccess?: () => void;
+  onSuccess: () => void;
 }
 
 export default function NoteForm({ onClose, onSuccess }: NoteFormProps) {
@@ -17,7 +17,7 @@ export default function NoteForm({ onClose, onSuccess }: NoteFormProps) {
     mutationFn: (noteData: NewNoteData) => createNote(noteData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notes'] });
-      onSuccess?.();
+      onSuccess();
     },
   });
 
