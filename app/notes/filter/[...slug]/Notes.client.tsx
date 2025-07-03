@@ -76,7 +76,7 @@ const NotesClient = ({ initialData, tag }: NotesClientProps) => {
             {data?.notes && data.notes.length > 0 && <NoteList notes={data.notes} />}
             {isModalOpen && (
                 <Modal onClose={closeModal}>
-                    <NoteForm onClose={closeModal} />
+                    <NoteForm onClose={closeModal} onSuccess={closeModal} />
                 </Modal>
             )}
         </div>
