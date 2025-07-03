@@ -11,11 +11,6 @@ export default function Home() {
           <p className={css.subtitle}>
             Your personal space for organizing thoughts, ideas, and important information
           </p>
-          <div className={css.cta}>
-            <Link href="/notes/filter" className={css.ctaButton}>
-              Start Taking Notes
-            </Link>
-          </div>
         </section>
 
         <p className={css.description}>
