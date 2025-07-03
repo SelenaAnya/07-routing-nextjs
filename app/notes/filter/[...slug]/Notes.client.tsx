@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { fetchNotes, type NotesResponse } from '@/lib/api';
 import Modal from '@/components/Modal/Modal';
 import Pagination from '@/components/Pagination/Pagination';
@@ -16,12 +16,18 @@ interface NotesClientProps {
     tag?: string;
 }
 
-export default function NotesClient({ initialData, tag }: NotesClientProps) {
+const NotesClient = ({ initialData, tag }: NotesClientProps) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [debounceSearchQuery] = useDebounce(searchQuery, 400);
+    const [isMounted, setIsMounted] = useState(false);
     const perPage = 12;
+
+    // Prevent hydration mismatch
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     const { data } = useQuery({
         queryKey: ['notes', currentPage, debounceSearchQuery, tag],
@@ -30,8 +36,6 @@ export default function NotesClient({ initialData, tag }: NotesClientProps) {
         initialData: currentPage === 1 && !debounceSearchQuery ? initialData : undefined,
     });
 
-    // console.log('Data on Vercel:', data);
-
     const handleSearchChange = (query: string) => {
         setSearchQuery(query);
         setCurrentPage(1);
@@ -39,6 +43,20 @@ export default function NotesClient({ initialData, tag }: NotesClientProps) {
 
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
+
+    // Don't render interactive elements until mounted
+    if (!isMounted) {
+        return (
+            <div className={css.app}>
+                <header className={css.toolbar}>
+                    <div>Loading...</div>
+                </header>
+                {initialData?.notes && initialData.notes.length > 0 && (
+                    <NoteList notes={initialData.notes} />
+                )}
+            </div>
+        );
+    }
 
     return (
         <div className={css.app}>
@@ -65,3 +83,4 @@ export default function NotesClient({ initialData, tag }: NotesClientProps) {
     );
 };
 
+export default NotesClient;

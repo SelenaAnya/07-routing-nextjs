@@ -10,37 +10,32 @@ type ModalProps = {
 };
 
 export default function Modal({ onClose, children }: ModalProps) {
-    const [mounted, setMounted] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
-        setMounted(true);
+        setIsMounted(true);
 
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.code === 'Escape') onClose();
         };
-        const originalOverflow = document.body.style.overflow;
+
         document.addEventListener('keydown', handleKeyDown);
         document.body.style.overflow = 'hidden';
 
         return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-            document.body.style.overflow = originalOverflow;
+            document.removeEventListener('keydown', handleKeyDown);
+            document.body.style.overflow = 'unset';
         };
     }, [onClose]);
 
-    const handleClickOutside = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (e.target === e.currentTarget)
-            onClose();
-    };
-
-    if (!mounted) {
+    // Prevent hydration mismatch by not rendering on server
+    if (!isMounted) {
         return null;
     }
 
     return createPortal(
-        <div className={css.backdrop} onClick={handleClickOutside}>
-            <div className={css.modal} onClick={(event) => event.stopPropagation()}
-            >{children}</div>
+        <div className={css.backdrop} onClick={e => e.target === e.currentTarget && onClose()}>
+            <div className={css.modal}>{children}</div>
         </div>,
         document.body
     );

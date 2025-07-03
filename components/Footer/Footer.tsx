@@ -1,12 +1,22 @@
+'use client';
+
+import React, { useState, useEffect } from "react";
 import css from "./Footer.module.css";
 
-export default function Footer() {
+const Footer = () => {
+    const [currentYear, setCurrentYear] = useState<number | null>(null);
+
+    useEffect(() => {
+        // Set current year only on client side
+        setCurrentYear(new Date().getFullYear());
+    }, []);
+
     return (
         <footer className={css.footer}>
             <div className={css.content}>
-                <p>&copy; {new Date().getFullYear()} NoteHub. All rights reserved.</p>
+                <p>&copy; {currentYear || 2024} NoteHub. All rights reserved.</p>
                 <div className={css.wrap}>
-                    <p>Developer: Kovalenko Anna</p>
+                    <p>Developer: your name</p>
                     <p>
                         Contact us: {" "}
                         <a href="mailto:selena.anya@mail.com">selena.anya@mail.com</a>
@@ -16,3 +26,5 @@ export default function Footer() {
         </footer>
     );
 };
+
+export default Footer;

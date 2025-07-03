@@ -1,3 +1,6 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import css from './Pagination.module.css';
 
@@ -12,10 +15,16 @@ export default function Pagination({
   totalPages,
   onPageChange,
 }: PaginationProps) {
+  const [isMounted, setIsMounted] = useState(false);
 
-  if (totalPages <= 1) {
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (totalPages <= 1 || !isMounted) {
     return null;
   }
+
   return (
     <ReactPaginate
       previousLabel={'←'}
@@ -28,8 +37,14 @@ export default function Pagination({
       forcePage={currentPage - 1}
       containerClassName={css.pagination}
       activeClassName={css.active}
+      previousClassName={css.pageLink}
+      nextClassName={css.pageLink}
+      pageClassName={css.pageItem}
+      pageLinkClassName={css.pageLink}
+      breakClassName={css.pageItem}
+      breakLinkClassName={css.pageLink}
+      disabledClassName={css.disabled}
+      renderOnZeroPageCount={() => null}
     />
-
   );
 }
-
