@@ -8,15 +8,13 @@ type NotePreviewProps = {
 
 const NotePreview = async ({ params }: NotePreviewProps) => {
     const { id } = await params;
-    const isValidId = !isNaN(Number(id)) && Number(id) > 0;
-    if (!isValidId) {
-        throw new Error("Invalid note ID");
-    }
+    const parseId = Number(id);
 
-    const queryClient = new QueryClient();
+const queryClient = new QueryClient();
+    
     await queryClient.prefetchQuery({
-        queryKey: ["note", id],
-        queryFn: () => fetchNoteById(Number(id)),
+        queryKey: ["note", parseId],
+        queryFn: () => fetchNoteById(parseId),
     });
 
     return (

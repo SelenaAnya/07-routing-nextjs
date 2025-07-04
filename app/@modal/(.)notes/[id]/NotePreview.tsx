@@ -7,36 +7,32 @@ import NotePreview from '@/components/NotPreview/NotPreview';
 import Modal from '@/components/Modal/Modal';
 import { Note } from "@/types/note";
 
-export default function NotePreviewClient() {
+export default function NotePreviewPage() {
     const { id } = useParams();
     const router = useRouter();
-    const parsedId = Number(id);
-
+    const parseId = Number(id);
+  
     const handleCloseModal = () => {
-        router.back();
+      router.back();
     };
-
-    // Check if ID is valid before making the query
-    if (!id || Number.isNaN(parsedId)) {
-        return <p>Invalid ID</p>;
-    }
-
+  
     const {
-        data: note,
-        isLoading,
-        isError,
+      data: note,
+      isLoading,
+      isError,
     } = useQuery<Note>({
-        queryKey: ["note", id], // Use consistent query key
-        queryFn: () => fetchNoteById(parsedId),
-        enabled: !!id && !Number.isNaN(parsedId), // Only run query if ID is valid
+      queryKey: ["notes", parseId],
+      queryFn: () => fetchNoteById(parseId),
+      refetchOnMount: false,
     });
-
+  
+    if (!id || Number.isNaN(id)) return <p>Invalid ID</p>;
     if (isLoading) return <p>Loading, please wait...</p>;
     if (isError || !note) return <p>Something went wrong.</p>;
-
+  
     return (
-        <Modal onClose={handleCloseModal}>
-            <NotePreview note={note} onClose={handleCloseModal} />
-        </Modal>
-    );
-}
+      <Modal onClose={handleCloseModal}>
+        <NotePreview note={note} onClose={handleCloseModal} />
+      </Modal>
+    );  
+    }
