@@ -1,6 +1,6 @@
 'use client';
 
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import React, { useMemo } from 'react';
 import css from './NoteDetails.module.css';
 import { useQuery } from '@tanstack/react-query';
@@ -8,7 +8,11 @@ import { fetchNoteById } from '@/lib/api';
 import Error from '@/components/Error/Error';
 
 const NoteDetailsClient = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams();
+  const router = useRouter();
+  const back = () => {
+    router.back();
+  };
 
   const {
     data: note,

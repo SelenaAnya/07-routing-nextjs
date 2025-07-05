@@ -1,6 +1,7 @@
 'use client';
 
-import React from 'react';
+import css from '../../../../components/Error/Error.module.css'; 
+// import React from 'react';
 
 
 type ErrorProps = {
@@ -8,11 +9,8 @@ type ErrorProps = {
     reset: () => void;
 };
 
-export default function ErrorProps({ error, reset }: ErrorProps) {
+export default function ErrorProps({ error }: ErrorProps) {
     return (
-        <div>
-            <p>Could not fetch the list of notes. {error.message}</p>
-            <button onClick={reset}>Try again</button>
-        </div>
+            <p className={css.errorText}>Could not fetch the list of notes. {error.message}</p>
     );
 }

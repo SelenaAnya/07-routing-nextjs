@@ -30,45 +30,50 @@ export interface FetchNotesParams {
   tag?: string;
 }
 
-export const fetchNotes = async (
-  currentPage: number = 1,
-  search: string = '',
-  perPage: number = 12,
+export interface NotesResponseProps {
+  notes: Note[];
+  totalPages: number;
+}
+
+export async function fetchNotes(
+  searchText: string,
+  currentPage: number,
+  // search: string = '',
   tag?: string
-): Promise<NotesResponse> => {
-  const params: Record<string, string | number> = {
-    page: currentPage,
-    perPage,
-  };
 
-  if (search.trim()) {
-    params.search = search.trim();
+): Promise<NotesResponse> {
+  const res = await axios.get<NotesResponseProps>("/notes", {
+    params: {
+      ...(searchText && { search: searchText }),
+      ...(tag && { tag }),
+      currentPage,
+      perPag: 10, // Default items per page
+    },
+  });
+  return res.data;
+}
+
+
+  interface noteData {
+    title: string;
+    content: string;
+    tag?: string;
+    totalPages: number;
   }
 
-  if (tag?.trim() && tag !== 'All') {
-    params.tag = tag.trim();
-  }
 
-  try {
-    const response: AxiosResponse<NotesResponse> = await api.get('/', { params });
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching notes:', error);
-    throw error;
-  }
-};
 
-export const createNote = async (noteData: CreateNoteRequest): Promise<Note> => {
-  const response: AxiosResponse<Note> = await api.post('/', noteData);
+  export async function createNote(noteData: CreateNoteRequest): Promise<Note>  {
+  const response = await axios.post<Note>('/notes', noteData);
   return response.data;
 };
 
-export const deleteNote = async (noteId: number): Promise<Note> => {
-  const response: AxiosResponse<Note> = await api.delete(`/${noteId}`);
+export async function deleteNote(noteId: number): Promise<Note> {
+  const response = await axios.delete<Note>(`/notes/${noteId}`);
   return response.data;
 };
 
-export const fetchNoteById = async (noteId: number): Promise<Note> => {
-  const response: AxiosResponse<Note> = await api.get(`/${noteId}`);
+export async function fetchNoteById(noteId: number): Promise<Note> {
+  const response = await axios.get<Note>(`/notes/${noteId}`);
   return response.data;
 };

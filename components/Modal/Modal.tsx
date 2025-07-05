@@ -1,7 +1,7 @@
 'use client';
 
 import { createPortal } from 'react-dom';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import css from './Modal.module.css';
 
 type ModalProps = {
@@ -10,13 +10,10 @@ type ModalProps = {
 };
 
 export default function Modal({ onClose, children }: ModalProps) {
-    const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
-        setIsMounted(true);
-
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.code === 'Escape') onClose();
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.code === 'Escape') onClose();
         };
 
         document.addEventListener('keydown', handleKeyDown);
@@ -24,19 +21,26 @@ export default function Modal({ onClose, children }: ModalProps) {
 
         return () => {
             document.removeEventListener('keydown', handleKeyDown);
-            document.body.style.overflow = 'unset';
+            document.body.style.overflow = "";
         };
     }, [onClose]);
 
     // Prevent hydration mismatch by not rendering on server
-    if (!isMounted) {
-        return null;
-    }
-
+    const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
+        if (event.target === event.currentTarget) {
+          onClose();
+        }
+      };
+    
     return createPortal(
-        <div className={css.backdrop} onClick={e => e.target === e.currentTarget && onClose()}>
+        <div
+            className={css.backdrop}
+            role="dialog"
+            aria-modal="true"
+            onClick={handleBackdropClick}
+        >
             <div className={css.modal}>{children}</div>
         </div>,
-        document.body
+      document.body
     );
 }
