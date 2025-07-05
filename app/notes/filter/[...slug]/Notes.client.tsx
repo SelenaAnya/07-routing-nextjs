@@ -83,7 +83,7 @@ export default function NotesClient({
             {data && notes.length > 0 && <NoteList notes={notes} />}
             {isOpenModal && (
                 <Modal onClose={closeModal}>
-                    <NoteForm onClose={closeModal} />
+                    <NoteForm onClose={closeModal} onSuccess={closeModal} />
                 </Modal>
             )}
         </div>
