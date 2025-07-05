@@ -10,7 +10,7 @@ const Footer = () => {
                     <p>Developer: Kovalenko Anna</p>
                     <p>
                         Contact us: {" "}
-                        <a href="mailto:selena.anya@mail.com">selena.anya@mail.com</a>
+                        <a href="mailto:selena.anya@gmail.com">selena.anya@gmail.com</a>
                     </p>
                 </div>
             </div>
