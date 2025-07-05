@@ -1,12 +1,12 @@
 'use client';
 
-import css from '../../Error/Error.module.css';
+import css from '@/components/Error/Error.module.css';
 
 type ErrorProps = {
     error: Error
 };
 
-export default function Error({ error }: ErrorProps) {
+export default function ErrorPage({ error }: ErrorProps) {
     return (
         <div>
             <h1 className={css.errorText}>Something went wrong</h1>

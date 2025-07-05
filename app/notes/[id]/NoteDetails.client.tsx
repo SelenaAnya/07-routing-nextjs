@@ -10,6 +10,8 @@ import Error from '@/components/Error/Error';
 const NoteDetailsClient = () => {
   const { id } = useParams();
   const router = useRouter();
+  const parseId = Number(id);
+  
   const back = () => {
     router.back();
   };
@@ -19,25 +21,10 @@ const NoteDetailsClient = () => {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ['note', id],
-    queryFn: () => fetchNoteById(Number(id)),
+    queryKey: ['notes', parseId], 
+    queryFn: () => fetchNoteById(parseId),
     refetchOnMount: false,
   });
-
-  // // Use useMemo to ensure consistent date formatting
-  // const formattedDate = useMemo(() => {
-  //   if (!note?.createdAt) return '';
-  //   return new Date(note.createdAt).toLocaleDateString('en-US', {
-  //     year: 'numeric',
-  //     month: 'long',
-  //     day: 'numeric',
-  //     hour: '2-digit',
-  //     minute: '2-digit'
-  //   });
-  // }, [note?.createdAt]);
-
-  // if (isLoading) return <p>Loading...</p>;
-  // if (error || !note) return <p>Something went wrong.</p>;
 
   return (
   <>
@@ -53,8 +40,6 @@ const NoteDetailsClient = () => {
           </div>
           <div className={css.content}>{note.content}</div>
           <div className={css.date}>{note?.createdAt}</div>
-            {/* {note.tag && <p className={css.tags}>Tag: {note.tag}</p>} */}
-            
         </div>
         </div>
       )}

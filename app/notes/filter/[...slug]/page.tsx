@@ -10,8 +10,10 @@ export default async function NotesByCategory({
 }: Props) {
     const { slug } = await params;
     const category = slug[0] === 'all' ? undefined : slug[0];
-    const data = await fetchNotes(1, '', 12, category);
+
+    const initialData = await fetchNotes(1, '', 12, category);
+    
     return (
-        <NotesClient initialData={data} tag={category} />
+        <NotesClient initialData={initialData} initialTag={category} />
     );
 }

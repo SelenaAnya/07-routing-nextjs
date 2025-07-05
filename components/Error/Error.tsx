@@ -1,4 +1,4 @@
-import css from "./ErrorText.module.css";
+import css from "./Error.module.css";
 
 interface ErrorTextProps {
   message: string;
@@ -7,7 +7,7 @@ interface ErrorTextProps {
 export default function ErrorText({ message }: ErrorTextProps) {
     return (
         <div className={css.errorText}>
-        <p>{message}</p>
+          <p>{message}</p>
         </div>
     );
 }
