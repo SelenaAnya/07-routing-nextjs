@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { fetchNotes, NotesResponseProps } from '@/lib/api';
+import { fetchNotes, type NotesResponse } from '@/lib/api';
 import Modal from '@/components/Modal/Modal';
 import Pagination from '@/components/Pagination/Pagination';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
@@ -12,7 +12,7 @@ import { useDebounce } from 'use-debounce';
 import NoteForm from '@/components/NoteForm/NoteForm';
 
 interface NotesClientProps {
-    initialData: NotesResponseProps;
+    initialData: NotesResponse;
     initialTag?: string;
 }
 

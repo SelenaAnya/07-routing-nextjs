@@ -38,42 +38,37 @@ export interface NotesResponseProps {
 export async function fetchNotes(
   searchText: string,
   currentPage: number,
-  // search: string = '',
   tag?: string
-
 ): Promise<NotesResponse> {
-  const res = await axios.get<NotesResponseProps>("/notes", {
+  const res = await api.get<NotesResponseProps>("", {
     params: {
       ...(searchText && { search: searchText }),
       ...(tag && { tag }),
-      currentPage,
-      perPag: 10, // Default items per page
+      page: currentPage,
+      perPage: 10, 
     },
   });
   return res.data;
 }
 
+interface noteData {
+  title: string;
+  content: string;
+  tag?: string;
+  totalPages: number;
+}
 
-  interface noteData {
-    title: string;
-    content: string;
-    tag?: string;
-    totalPages: number;
-  }
-
-
-
-  export async function createNote(noteData: CreateNoteRequest): Promise<Note>  {
-  const response = await axios.post<Note>('/notes', noteData);
+export async function createNote(noteData: CreateNoteRequest): Promise<Note> {
+  const response = await api.post<Note>('', noteData);
   return response.data;
-};
+}
 
 export async function deleteNote(noteId: number): Promise<Note> {
-  const response = await axios.delete<Note>(`/notes/${noteId}`);
+  const response = await api.delete<Note>(`/${noteId}`);
   return response.data;
-};
+}
 
 export async function fetchNoteById(noteId: number): Promise<Note> {
-  const response = await axios.get<Note>(`/notes/${noteId}`);
+  const response = await api.get<Note>(`/${noteId}`);
   return response.data;
-};
+}
