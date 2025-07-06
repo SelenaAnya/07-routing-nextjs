@@ -25,14 +25,14 @@ export interface UpdateNoteData {
   tag: string;
 }
 
-export const AVAILABLE_TAGS = ['All', 'Work', 'Personal', 'Study', 'Ideas'] as const;
-export type TagType = typeof AVAILABLE_TAGS[number];
-
 export interface NewNoteData {
   title: string;
   content: string;
   tag: string;
 }
+
+export const AVAILABLE_TAGS = ['All', 'Work', 'Personal', 'Study', 'Ideas'] as const;
+export type TagType = typeof AVAILABLE_TAGS[number];
 
 export interface NotePreviewProps {
   note: {
@@ -43,4 +43,9 @@ export interface NotePreviewProps {
     note: Note;
   };
 }
-
+export interface NotesClient {
+ title: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+}

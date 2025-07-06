@@ -10,14 +10,13 @@ type NoteDetailsProps = {
   params: Promise<{ id: string }>;
 };
 
-const NoteDetails = async ({ params }: NoteDetailsProps) => {
+export default async function NoteDetails({ params }: NoteDetailsProps) {
   const { id } = await params;
-  const parseId = Number(id);
 
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery({
-    queryKey: ['notes', parseId],
-    queryFn: () => fetchNoteById(parseId),
+  queryClient.prefetchQuery({
+    queryKey: ["note", id],
+    queryFn: () => fetchNoteById(Number(id)),
   });
 
   return (
@@ -25,5 +24,4 @@ const NoteDetails = async ({ params }: NoteDetailsProps) => {
       <NoteDetailsClient />
     </HydrationBoundary>
   );
-};
-export default NoteDetails;
+}

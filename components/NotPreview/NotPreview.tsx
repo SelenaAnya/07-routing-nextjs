@@ -14,14 +14,16 @@ export default function NotePreview({ id, onClose }: NotePreviewProps) {
   const {
     data: note,
     isError,
+    isLoading,
   } = useQuery({
-    queryKey: ["note", id],
-    queryFn: () => fetchNoteById(Number(id)),
+    queryKey: ["notes", id], 
+    queryFn: () => fetchNoteById(id),
     refetchOnMount: false,
   });
 
   return (
     <>
+      {isLoading && <p>Loading, please wait...</p>}
       {isError && <ErrorText message="Something went wrong." />}
       {note && (
         <div className={css.container}>
