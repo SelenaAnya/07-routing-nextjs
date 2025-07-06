@@ -1,38 +1,22 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
-import { fetchNoteById } from '@/lib/api';
+// import { useQuery } from '@tanstack/react-query';
+// import { fetchNoteById } from '@/lib/api';
 import { useParams, useRouter } from 'next/navigation';
 import NotePreview from '@/components/NotPreview/NotPreview';
 import Modal from '@/components/Modal/Modal';
-import { Note } from "@/types/note";
+// import { Note } from "@/types/note";
 
-export default function NotePreviewPage() {
-    const { id } = useParams();
-    const router = useRouter();
-    const parseId = Number(id);
+export default function PreviewClient() {
+  const { id } = useParams();
+
+  const router = useRouter();
+
   
-    const handleCloseModal = () => {
-      router.back();
-    };
-  
-    const {
-      data: note,
-      isLoading,
-      isError,
-    } = useQuery<Note>({
-      queryKey: ["notes", parseId],
-      queryFn: () => fetchNoteById(parseId),
-      refetchOnMount: false,
-    });
-  
-    if (!id || Number.isNaN(id)) return <p>Invalid ID</p>;
-    if (isLoading) return <p>Loading, please wait...</p>;
-    if (isError || !note) return <p>Something went wrong.</p>;
-  
-    return (
-      <Modal onClose={handleCloseModal}>
-        <NotePreview note={note} onClose={handleCloseModal} />
-      </Modal>
-    );  
-    }
+  const closeModal = () => router.back();
+  return (
+    <Modal onClose={closeModal}>
+      <NotePreview id={Number(id)} onClose={closeModal} />
+    </Modal>
+  );
+}

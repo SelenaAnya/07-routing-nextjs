@@ -12,14 +12,13 @@ const NoteDetailsClient = () => {
   const router = useRouter();
   const parseId = Number(id);
   
-  const back = () => {
+  const back = () => 
     router.back();
-  };
 
   const {
     data: note,
     isLoading,
-    error,
+    isError,
   } = useQuery({
     queryKey: ['notes', parseId], 
     queryFn: () => fetchNoteById(parseId),
@@ -29,7 +28,7 @@ const NoteDetailsClient = () => {
   return (
   <>
     {isLoading && <p>Loading, please wait...</p>}
-      {error && <Error message="Something went wrong." />}
+      {isError && <Error message="Something went wrong." />}
       {note && (
 
       <div className={css.container}>
