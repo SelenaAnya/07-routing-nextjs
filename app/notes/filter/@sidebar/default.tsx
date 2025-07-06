@@ -1,6 +1,15 @@
 import css from "./SidebarNotes.module.css";
 import Link from "next/link";
-import { tags } from '@/constants/constants'
+
+const tags: string[] = [
+    "All",
+    "Todo",
+    "Work",
+    "Personal",
+    "Meeting",
+    "Shopping",
+];
+  
 export default function NotesSidebar() {
 
     return (

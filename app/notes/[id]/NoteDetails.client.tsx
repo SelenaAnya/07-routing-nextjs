@@ -7,6 +7,7 @@ import css from './NoteDetails.module.css';
 import ErrorText from '@/components/Error/Error';
 
 
+
 export default function NotesClient() {
   const { id } = useParams();
   const router = useRouter();

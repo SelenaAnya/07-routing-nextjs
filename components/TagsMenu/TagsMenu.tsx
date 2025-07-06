@@ -1,36 +1,39 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import css from './TagsMenu.module.css';
-import { useState } from 'react';
-import { tags } from '@/constants/constants'
+import { useState } from "react";
+import css from "./TagsMenu.module.css";
+import Link from "next/link";
 
-// const tags: string[] = ['All', 'Todo', 'Work', 'Personal', 'Meeting', 'Shopping'];
-
+const tags: string[] = [
+  "All",
+  "Todo",
+  "Work",
+  "Personal",
+  "Meeting",
+  "Shopping",
+];
+// відкриття/закриття
 export default function TagsMenu() {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const toggle = () => setIsOpen(!isOpen);
 
-    const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen);
-    };
+  const handleCloseMenu = () => {
+    setIsOpen(false);
+  };
 
-    const handleTagClick = () => {
-        setIsMenuOpen(false);
-    };
-
-    return (
-        <div className={css.menuContainer}>
-      <button className={css.menuButton} onClick={toggleMenu}>
-        Notes &#9662;
+  return (
+    <div className={css.menuContainer}>
+      <button className={css.menuButton} onClick={toggle}>
+        Notes ▾
       </button>
-      {isMenuOpen && (
+      {isOpen && (
         <ul className={css.menuList}>
           {tags.map((tag) => (
             <li key={tag} className={css.menuItem}>
               <Link
                 href={`/notes/filter/${tag}`}
                 className={css.menuLink}
-                onClick={handleTagClick}
+                onClick={handleCloseMenu}
               >
                 {tag}
               </Link>
@@ -40,6 +43,4 @@ export default function TagsMenu() {
       )}
     </div>
   );
-};
-
-
+}
