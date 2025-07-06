@@ -1,11 +1,10 @@
 import { useId } from "react";
 import css from "./NoteForm.module.css";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { Tag } from "@/types/note";
-import * as Yup from "yup";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createNote } from "@/lib/api";
-
+import { Tag } from "@/types/note";
+import * as Yup from "yup";
 
 type NoteFormProps = {
   onClose: () => void;
@@ -18,10 +17,10 @@ interface FormValues {
   tag: Tag;
 }
 
-const initialVelues: FormValues = {
+const initialValues: FormValues = {
   title: "",
   content: "",
-  Tag: "Todo",
+  tag: "Todo",
 };
 
 const FormSchema = Yup.object().shape({
@@ -68,7 +67,7 @@ export default function NoteForm({ onClose }: NoteFormProps) {
 
   return (
     <Formik
-      initialValues={initialVelues}
+      initialValues={initialValues}
       validationSchema={FormSchema}
       onSubmit={handleSubmit}
     >
