@@ -1,5 +1,3 @@
-// app/page.tsx
-import Link from 'next/link';
 import css from './page.module.css';
 
 export default function Home() {

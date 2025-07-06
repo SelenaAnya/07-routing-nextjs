@@ -1,14 +1,7 @@
 import css from "./SidebarNotes.module.css";
 import Link from "next/link";
-
+import { tags } from '@/constants/constants'
 export default function NotesSidebar() {
-    const tags = [
-        'All',
-        'Work',
-        'Personal',
-        'Trave',
-        'Health',
-    ];
 
     return (
         <ul className={css.menuList}>

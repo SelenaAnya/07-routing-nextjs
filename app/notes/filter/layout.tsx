@@ -1,12 +1,12 @@
 import React from "react";
 import css from './layout.module.css';
 
-interface Props {
+interface NotesListProps {
     children: React.ReactNode;
     sidebar: React.ReactNode;
 };
 
-export default function NotesLayout({ children, sidebar }: Props) {
+export default function NotesLayout({ children, sidebar }: NotesListProps) {
     return (
         <div className={css.container}>
             <aside className={css.sidebar}>{sidebar}</aside>

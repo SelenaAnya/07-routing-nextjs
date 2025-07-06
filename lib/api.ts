@@ -1,20 +1,14 @@
-import axios from 'axios';
-import { Note, NewNoteData } from '../types/note';
+import { Note, Tag } from "@/types/note";
+import axios from "axios";
 
-const API_BASE_URL = 'https://notehub-public.goit.study/api';
-const token = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
+const myToken = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
+axios.defaults.baseURL = "https://notehub-public.goit.study/api";
+axios.defaults.headers.common["Authorization"] = `Bearer ${myToken}`;
 
-const serviceClient = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-});
-
-export interface FetchNotesProps {
+export type FetchNotesProps = {
   notes: Note[];
   totalPages: number;
-}
+};
 
 export async function fetchNotes(
   searchText: string,
@@ -32,28 +26,25 @@ export async function fetchNotes(
   return res.data;
 }
 
-export async function createNote(newNote: NewNoteData): Promise<Note> {
-  const res = await serviceClient.post<Note>("/notes", newNote);
+interface NewNote {
+  title: string;
+  content?: string;
+  tag: Tag;
+}
+
+export async function fetchNoteById(id: number): Promise<Note> {
+  const res = await axios.get<Note>(`/notes/${id}`);
+  return res.data;
+}
+
+
+export async function createNote(newNote: NewNote): Promise<Note> {
+  const res = await axios.post<Note>("/notes", newNote);
   return res.data;
 }
 
 export async function deleteNote(id: number): Promise<Note> {
-  const res = await serviceClient.delete<Note>(`/notes/${id}`);
-  return res.data;
-}
-
-export async function fetchNoteById(id: number): Promise<Note> {
-  const res = await serviceClient.get<Note>(`/notes/${id}`);
-  return res.data;
-}
-
-export async function updateNote(note: Note): Promise<Note> {
-  const res = await serviceClient.put<Note>(`/notes/${note.id}`, note);
-  return res.data;
-}
-
-export async function fetchTags(): Promise<string[]> {
-  const res = await serviceClient.get<string[]>('/tags');
+  const res = await axios.delete<Note>(`/notes/${id}`);
   return res.data;
 }
 
