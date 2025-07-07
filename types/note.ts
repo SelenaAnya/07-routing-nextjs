@@ -7,10 +7,6 @@ export interface Note {
   tag: string;
 }
 
-// export interface Tag {
-//   name: string;
-//   count: number;
-// }
 
 export interface CreateNoteData {
   title: string;
@@ -33,8 +29,6 @@ export interface NewNoteData {
 
 export type Tag = "Todo" | "Work" | "Personal" | "Meeting" | "Shopping";
 
-// export const AVAILABLE_TAGS = ['All', 'Work', 'Personal', 'Study', 'Ideas'] as const;
-// export type TagType = typeof AVAILABLE_TAGS[number];
 
 export interface NotePreviewProps {
   note: {
